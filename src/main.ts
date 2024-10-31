@@ -1,6 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import VMoney from 'v-money3';
+
+
 // import axios from 'axios';
 
 // Interceptação para adicionar o token nas requisições
@@ -14,4 +18,7 @@ import router from './router';
 //   return Promise.reject(error);
 // });
 
-createApp(App).use(router).mount('#app');
+createApp(App)
+    .use(router)
+    .use(VMoney)
+    .mount('#app');

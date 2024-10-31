@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/Login.vue';
 import Main from '@/views/Main.vue';
-import PDV from '@/views/PDV.vue';
 import Emitente from '@/views/Emitente.vue';
 import Produtos from '@/views/Produtos.vue';
+import PDV from '@/views/PDV.vue';
 
 const routes = [
   {

@@ -1,6 +1,9 @@
 <template>
   <aside class="sidebar" :class="{ 'sidebar-open': isOpen }">
     <ul class="menu-list">
+      <li class="menu-top">
+        <router-link to="/main/pdv" class="full-link">PDV</router-link>
+      </li>
       <!-- Menu principal com submenus -->
       <li>
         <div @click="toggleMenu('cadastro')" class="menu-header">
@@ -59,6 +62,7 @@ const toggleMenu = (menu: string) => {
 .menu-list {
   list-style-type: none;
   padding: 10px;
+  padding-top: 80px;
 }
 
 .menu-list li {
@@ -88,7 +92,6 @@ const toggleMenu = (menu: string) => {
   cursor: pointer;
   padding: 10px 0;
   background-color: #3a82f7;
-  margin-top: 70px;
 }
 
 .menu-header:hover {
@@ -125,12 +128,41 @@ const toggleMenu = (menu: string) => {
   text-decoration: none;
 }
 
-/* Estilo para links no sidebar */
-/* .router-link-active {
-  background-color: #2a6ad9;
-} */
-
 .sidebar-open .menu-list li {
   color: white;
+}
+
+.menu-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  color: white;
+  background-color: #3a82f7;
+  text-decoration: none;
+}
+
+.full-link {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+}
+
+.menu-top:hover .full-link {
+  background-color: #2a6ad9;
+}
+
+.menu-top a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu-top:hover {
+  background-color: #2a6ad9;
 }
 </style>

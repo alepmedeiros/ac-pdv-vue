@@ -62,7 +62,7 @@ const navigateTo = (route: string) => {
   margin-top: 80px;
   padding: 20px;
   overflow: auto;
-  background-color: #f5f5f5;
+  background-color: #fff;
   flex-grow: 1;
 }
 </style>
