@@ -111,12 +111,6 @@ const calcularTotal = () => {
   total.value = unitario.value * quantity.value;
 };
 
-
-console.log('codigo: ', productCode.value);
-console.log('quantity: ', quantity.value);
-console.log('inputValue: ', unitario.value);
-console.log('total: ', total.value);
-
 // Funções de manipulação de eventos
 const cancelarVenda = () => emit('cancelarVenda');
 const limpaItens = () => emit('limpaItens');

@@ -31,7 +31,7 @@ import type { Item } from '@/types/items';
 
 const productCode = ref<string>('');
 const quantity = ref<number>(1);
-const unitario = ref<number>(1);
+const unitario = ref<number>(0);
 const total = ref<number>(0);
 const items = ref<Item[]>([]);
 const currentProductName = ref(''); // Nome inicial do produto
