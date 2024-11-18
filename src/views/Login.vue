@@ -1,4 +1,5 @@
 <template>
+  <p v-if="authMessage" class="alert">{{ authMessage }}</p>
   <div class="login-container">
     <form @submit.prevent="login">
       <h2>Login</h2>
@@ -17,22 +18,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import axios from 'axios';
+import { ref, onMounted  } from 'vue';
 
 const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
+const authMessage = ref<string | null>(null);
+
+onMounted(() => {
+  authMessage.value = localStorage.getItem('authMessage');
+  if (authMessage.value) {
+    localStorage.removeItem('authMessage'); // Limpa a mensagem após exibir
+  }
+});
 
 const login = async () => {
   try {
-    // const response = await axios.post('/api/auth/login', {
-    //   username: username.value,
-    //   password: password.value,
-    // });
-
-    // const token = response.data.token;
-    // localStorage.setItem('token', token);
     window.location.href = '/main';
   } catch (error) {
     errorMessage.value = 'Login ou senha incorretos. Tente novamente.';
@@ -41,6 +42,11 @@ const login = async () => {
 </script>
 
 <style scoped>
+.alert {
+  color: red;
+  margin-bottom: 1em;
+}
+
 .login-container {
   display: flex;
   justify-content: center;

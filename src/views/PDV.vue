@@ -3,91 +3,100 @@
     <ProductDisplay :productName="currentProductName" />
 
     <div class="pos-content">
-      <div class="product-input">
-        <FloatingLabelInput
-          v-model="productCode"
-          label="Código"
-          type="text"
-          id="productCode"
-        />
+      <ProductInput
+        :productCode="productCode"
+        :quantity="quantity"
+        :unitario="unitario"
+        :total="total"
+        @cancelarVenda="cancelarVenda"
+        @limpaItens="limpaItens"
+        @imprimirCupom="imprimirCupom"
+        @finalizarVenda="finalizarVenda"
+        @buscarProduto="buscarProduto"
+      />
+      
+      <ProductList :items="items" @remove="removeItem" />
 
-        <div class="product-input-container">
-          <div class="left-section">
-            <ImageUploadInput
-              id="productImage"
-              placeholder="SEM IMAGEM"
-            />
-          </div>
-
-          <div class="right-section">
-            <FloatingLabelInput
-              v-model="quantity"
-              label="Quantidade"
-              type="number"
-              id="quantity"
-            />
-            <FloatingLabelInput
-              v-model="value"
-              label="Unitário"
-              type="number"
-              id="value"
-              readonly
-              
-            />
-            <FloatingLabelInput
-              v-model="total"
-              label="Total"
-              type="text"
-              id="total"
-              readonly
-            />
-          </div>
-        </div>
-
-        <div class="actions">
-          <ActionButton buttonClass="cancel" @click="cancelarVenda">CANCELAR</ActionButton>
-          <ActionButton buttonClass="clear" @click="limpaItens">LIMPAR TUDO</ActionButton>
-          <ActionButton buttonClass="print" @click="imprimirCupom">IMPRIMIR</ActionButton>
-          <ActionButton buttonClass="pay" @click="finalizarVenda">PAGAR</ActionButton>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue';
+import ProductInput from '@/components/ProductInput.vue';
+import ProductList from '@/components/ProductList.vue';
 import ProductDisplay from '@/components/ProductDisplay.vue';
-import FloatingLabelInput from '@/components/FloatingLabelInput.vue';
-import ImageUploadInput from '@/components/ImageUploadInput.vue';
-import ActionButton from '@/components/ActionButton.vue';
+import { getProductByCode } from '@/service/productService';
+import type { Item } from '@/types/items';
 
+const productCode = ref<string>('');
+const quantity = ref<number>(1);
+const unitario = ref<number>(1);
+const total = ref<number>(0);
+const items = ref<Item[]>([]);
 const currentProductName = ref(''); // Nome inicial do produto
 
-// Função para atualizar o nome do produto
-function updateProductName(newName: string) {
-  currentProductName.value = newName;
+const buscarProduto = async () => {
+  try {
+    const response = await getProductByCode(productCode.value);
+    const produto = Array.isArray(response.data) ? response.data[0] : response.data; 
+    currentProductName.value = produto.descricao;
+    unitario.value = produto.valorVenda; // Define o valor unitário do produto
+    total.value = unitario.value * quantity.value; // Calcula o total inicial   
+
+    adicionarProduto(produto);
+  } catch (error) {
+    console.error('Erro ao buscar o produto:',error);
+  }
 }
 
-// Exemplo: Chame essa função ao buscar os dados do produto da API
-updateProductName('Novo Produto');
+// Função para adicionar o produto à lista de itens
+const adicionarProduto = (produto: any) => {
+  const item: Item = {
+    description: produto.descricao,
+    quantity: quantity.value,
+    value: produto.valorVenda,
+    total: produto.valorVenda * quantity.value,
+  };
+
+  items.value.push(item);
+  atualizarTotais();
+  resetInputs();
+};
 
 
+const resetInputs = () => {
+  productCode.value = '';
+  quantity.value = 1;
+  unitario.value = 0;
+};
+
+// Função para atualizar os totais após adicionar um item
+const atualizarTotais = () => {
+  total.value = items.value.reduce((acc, item) => acc + item.total, 0);
+};
+
+// Defina as funções de manipulação para os eventos
 const cancelarVenda = () => {
-  //cancela a venda
+  console.log('Venda cancelada');
 };
 
 const limpaItens = () => {
-  //limpa os itens da tela
-}
+  console.log('Itens limpos');
+};
 
 const imprimirCupom = () => {
-  //fecha a venda e imprime o cupom
-}
+  console.log('Impressão do cupom iniciada');
+};
 
 const finalizarVenda = () => {
-  //finaliza e visualiza o cupom gerado
-}
+  console.log('Venda finalizada');
+};
+
+const removeItem = (index: number) => {
+  items.value.splice(index, 1);
+  atualizarTotais();
+};
 </script>
 
 <style scoped>
@@ -95,24 +104,7 @@ const finalizarVenda = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 100px 100px; /* Ajuste o padding top para 60px para compensar a navbar fixa */
-}
-.product-input-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%; /* Ocupa a altura total */
-  flex-wrap: wrap; /* Para responsividade */
-}
-
-.product-input {
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-  background-color: #3366cc;
-  padding: 20px;
-  border-radius: 10px;
-  margin-right: 10px;
+  padding: 10px 10px 10px; /* Ajuste o padding top para 60px para compensar a navbar fixa */
 }
 
 .pos-content {
@@ -120,25 +112,5 @@ const finalizarVenda = () => {
   justify-content: space-between;
   width: 100%;
   padding-top : 20px;
-}
-
-.left-section, .right-section {
-  width: 48%;
-  height: 92.3%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between; /* Alinha os botões dentro do container */
-  width: 100%;
-  background-color: white; /* Define o fundo branco */
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px; /* Espaçamento superior de 20px */
-  box-sizing: border-box; /* Para incluir padding na largura */
-  flex-wrap: wrap; /* Para garantir que os botões se ajustem em telas menores */
 }
 </style>

@@ -44,6 +44,12 @@ const navigateTo = (route: string) => {
 </script>
 
 <style scoped>
+.main-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .back-button button {
   background-color: #555;
   color: white;
@@ -59,7 +65,7 @@ const navigateTo = (route: string) => {
 
 /* Conteúdo Principal */
 .content {
-  margin-top: 80px;
+  margin-top: 60px;
   padding: 20px;
   overflow: auto;
   background-color: #fff;
