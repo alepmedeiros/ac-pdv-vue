@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, defineProps, defineEmits } from 'vue';
-import axios from 'axios';
+import apiClient from '@/service/api';
 
 interface Option {
   id: string;
@@ -39,14 +39,10 @@ const selectedOption = ref<string | null>(null);
 const fetchOptions = async () => {
   if (!props.useStatic && props.apiEndpoint) {
     try {
-      const response = await axios.get(props.apiEndpoint, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await apiClient.get(props.apiEndpoint);
       options.value = response.data.map((item: any) => ({
         id: item.id,
-        label: item.nome,
+        label: item.descricao,
       }));
     } catch (error) {
       console.error('Erro ao buscar dados:', error);

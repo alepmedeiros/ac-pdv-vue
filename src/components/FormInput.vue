@@ -65,7 +65,6 @@ const handleInput = (event: Event) => {
 .form-group input {
   width: 100%;
   padding: 10px;
-  padding-top: 20px; /* Espaço para o label flutuante */
   border: 1px solid #ccc;
   border-radius: 4px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -78,23 +77,11 @@ const handleInput = (event: Event) => {
 }
 
 .form-group label {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 14px;
-  color: #666;
-  background: white;
-  padding: 0 5px;
-  transition: 0.2s;
-  pointer-events: none;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.form-group .float-label {
-  top: -10px;
-  left: 10px;
-  font-size: 12px;
-  color: #a049b8;
-}
 
 .readonly-input {
   background-color: #f8f8f8;

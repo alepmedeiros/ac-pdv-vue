@@ -4,7 +4,6 @@
     <Navbar
       :logo="logo"
       :userName="userName"
-      :userImage="userImage"
       @toggleSidebar="toggleSidebar"
     />
 
@@ -27,7 +26,7 @@ import Sidebar from '@/components/Sidebar.vue'; // Importando Sidebar componenti
 const router = useRouter();
 
 // Variáveis para parametrizar o Navbar
-const logo = '@/assets/logo.png'; // Substitua pelo caminho do logo
+const logo = '@/assets/novalogo.png'; // Substitua pelo caminho do logo
 const userName = 'Alessandro Medeiros';
 const userImage = 'https://avatar.iran.liara.run/public/30'; // Substitua pelo caminho do avatar do usuário
 

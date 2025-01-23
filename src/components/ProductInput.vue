@@ -5,6 +5,7 @@
           label="Código"
           type="text"
           id="productCode"
+          ref="productCodeInput"
           @keydown.enter="emitBuscarProduto"
         />
 
@@ -12,7 +13,6 @@
           <div class="left-section">
             <ImageUploadInput
               id="productImage"
-              placeholder="SEM IMAGEM"
             />
           </div>
 
@@ -22,8 +22,10 @@
               label="Quantidade"
               type="number"
               id="quantity"
+              ref="quantityInput"
               :isDecimal="true"
               @input="calcularTotal"
+              @keydown.enter="adicionarItem"
             />
             <FloatingLabelInput
               v-model="unitario"
@@ -31,7 +33,7 @@
               type="number"
               id="unitario"   
               :disabled="true" 
-              :isCurrency="true"          
+              :isCurrency="true"         
             />
             <FloatingLabelInput
               v-model="total"
@@ -47,14 +49,14 @@
         <div class="actions">
           <ActionButton buttonClass="cancel" @click="cancelarVenda">CANCELAR</ActionButton>
           <ActionButton buttonClass="clear" @click="limpaItens">LIMPAR TUDO</ActionButton>
-          <ActionButton buttonClass="print" @click="imprimirCupom">IMPRIMIR</ActionButton>
-          <ActionButton buttonClass="pay" @click="finalizarVenda">PAGAR</ActionButton>
+          <ActionButton buttonClass="print" @click="imprimirCupom">IMPRIMIR (F4)</ActionButton>
+          <ActionButton buttonClass="pay" @click="abrirModalPagamento">PAGAR</ActionButton>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, watch } from 'vue';
+import { ref, defineProps, defineEmits, watch, onMounted, onUnmounted  } from 'vue';
 import FloatingLabelInput from './FloatingLabelInput.vue';
 import ImageUploadInput from './ImageUploadInput.vue';
 import ActionButton from './ActionButton.vue';
@@ -72,8 +74,10 @@ const emit = defineEmits<{
   (e: 'cancelarVenda'): void;
   (e: 'limpaItens'): void;
   (e: 'imprimirCupom'): void;
-  (e: 'finalizarVenda'): void;
+  (e: 'abrirModalPagamento'): void;
   (e: 'buscarProduto', codigo: string): void;
+  (e: 'adicionarProduto'): void;
+  (e: 'limparCampos'): void;
 }>();
 
 // Define os valores para v-model
@@ -82,16 +86,24 @@ const quantity = ref(props.quantity || 1);
 const unitario = ref(props.unitario || 0);
 const total = ref(props.total || 0);
 
+// Adicionar produto com os valores atuais ao pressionar F2
+const adicionarItem = () => {
+  emit('adicionarProduto', {
+    description: productCode.value,
+    quantity: quantity.value,
+    value: unitario.value,
+    total: total.value
+  });
+};
+
 // Watchers para atualizar os valores reativamente sempre que as props mudarem
 watch(() => props.quantity, (newQuantity) => {
   quantity.value = newQuantity ?? 1;
   calcularTotal();
 });
 
-watch(
-  () => props.unitario, 
-  (newValue) => {
-    unitario.value = newValue ?? 0;
+watch(() => props.unitario, (newUnitario) => {
+  unitario.value = newUnitario ?? 0;
   calcularTotal();
   }
 );
@@ -100,9 +112,28 @@ watch(() => props.total, (newTotal) => {
   total.value = newTotal ?? 0;
 });
 
+// Observa mudanças nas props e reseta os campos se forem limpos
+watch(() => props.productCode, (newValue) => {
+  productCode.value = newValue || ''; // Atualiza o campo de código
+});
+
+watch(() => props.quantity, (newValue) => {
+  quantity.value = newValue || 1; // Atualiza a quantidade
+});
+
+watch(() => props.unitario, (newValue) => {
+  unitario.value = newValue || 0; // Atualiza o valor unitário
+});
+
+watch(() => props.total, (newValue) => {
+  total.value = newValue || 0; // Atualiza o total
+});
 
 // Função para emitir o evento de busca de produto
 const emitBuscarProduto = () => {
+  if (!productCode.value) {
+    return;
+  }
   emit('buscarProduto', productCode.value);
 };
 
@@ -111,11 +142,25 @@ const calcularTotal = () => {
   total.value = unitario.value * quantity.value;
 };
 
+const handleKeyPress = (event: KeyboardEvent) => { 
+  if (event.key === 'F2') {
+    adicionarItem();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyPress);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyPress);
+});
+
 // Funções de manipulação de eventos
 const cancelarVenda = () => emit('cancelarVenda');
 const limpaItens = () => emit('limpaItens');
 const imprimirCupom = () => emit('imprimirCupom');
-const finalizarVenda = () => emit('finalizarVenda');
+const abrirModalPagamento = () => emit('abrirModalPagamento');
 </script>
 
 <style scoped>

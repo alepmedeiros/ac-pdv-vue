@@ -16,6 +16,7 @@
           <li><router-link to="/main/produtos">Produtos</router-link></li>
         </ul>
       </li>
+      <li class="menu-top"><router-link to="/relatorios">Relatórios</router-link></li>
     </ul>
   </aside>
 </template>

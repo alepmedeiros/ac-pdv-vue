@@ -3,13 +3,24 @@
     <div class="navbar-logo">
       <button class="menu-btn" @click="$emit('toggleSidebar')">☰</button>
       <!-- Exibir a logo passada via prop ou uma imagem padrão (QR code) -->
-      <router-link to="/main"><img src='@/assets/logo.png' alt="Logo" class="logo" /></router-link>
-      <span class="navbar-title">SISTEMA DE NFC-e</span>
+      <router-link to="/main">
+        <img 
+          :src="resolveImagePath(logo)" 
+          alt="Logo" 
+          class="logo" 
+        />
+      </router-link>
+      <span class="navbar-title">SISTEMA DE NFC-e - Pré-Aula</span>
     </div>
 
     <!-- Área do usuário com o avatar -->
     <div class="user-info">
-      <img :src="userImage" alt="User Avatar" class="user-avatar" @click="toggleDropdown" />
+      <img 
+        :src="userImage || defaultUserImage" 
+        alt="User Avatar" 
+        class="user-avatar" 
+        @click="toggleDropdown" 
+      />
       <span class="user-name">{{ userName }}</span>
 
       <!-- Transição suave para o Dropdown Menu -->
@@ -25,14 +36,14 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
-import logoPadrao from '@/assets/logo.png';
+import defaultImage from '@/assets/logo.png'; // Caminho para a imagem padrão do logo
+import defaultUserImage from '@/assets/semusuario.jpg'; // Caminho para uma imagem padrão de avatar
 
 // Props para o logo, nome do usuário e imagem do usuário
 const props = defineProps({
   logo: {
     type: String,
-    required: true,
-    default: null, // Caso o logo não seja passado, será usado um valor padrão
+    default: '', // Caso o logo não seja passado, será usado um valor padrão
   },
   userName: {
     type: String,
@@ -40,12 +51,23 @@ const props = defineProps({
   },
   userImage: {
     type: String,
-    required: true,
+    default: '',
   },
 });
 
-console.log(props.logo);
+const resolveImagePath = (path: string): string => {
+  if (!path) {
+    return defaultImage; // Retorna a imagem padrão se o caminho não for passado
+  }
 
+  // Verifica se é um caminho relativo da pasta `assets`
+  if (path.startsWith('@/')) {
+    // Converte para um caminho público utilizável
+    return new URL(path.replace('@/', '/src/'), import.meta.url).href;
+  }
+
+  return path; // Retorna o caminho ou URL externo diretamente
+};
 
 // Estado reativo para o dropdown menu
 const isDropdownOpen = ref(false);

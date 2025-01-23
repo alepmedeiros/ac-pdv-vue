@@ -41,6 +41,8 @@ import { defineProps, computed } from 'vue';
 import { formatCurrency } from '@/utils/utils.ts';
 import TotalDisplay from './TotalDisplay.vue';
 
+
+
 interface Item {
 description: string;
 quantity: number;

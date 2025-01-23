@@ -1,20 +1,21 @@
 <template>
   <div class="input-group">
     <input 
-      :value="formattedInputValue" 
+      :value="displayedValue" 
       @input="updateValue" 
-      :type="type" 
+      :type="inputType" 
       :id="id" 
       :placeholder="label" 
       :readonly="disabled"
       :class="{ 'no-interaction': disabled, 'text-right': alignRight }"
+      ref="inputElement"
     />
     <label :for="id" class="fixed-label">{{ label }}</label>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, computed } from 'vue';
+import { defineProps, defineEmits, computed, ref, watch  } from 'vue';
 import { formatCurrency, formatDecimal } from '@/utils/utils';
 
 const props = defineProps<{
@@ -29,31 +30,46 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-// Computed property to handle formatted display of the value
-const formattedInputValue = computed({
-  get() {
-    if (props.isCurrency) {
-      return formatCurrency(Number(props.modelValue));
-    } else if (props.isDecimal) {
-      return formatDecimal(Number(props.modelValue));
-    }
-    return props.modelValue;
-  },
-  set(value: string | number) {
-    emit('update:modelValue', value);
+// Computed property to handle the display of the formatted value
+const displayedValue = computed(() => {
+  if (props.isCurrency) {
+    return formatCurrency(Number(props.modelValue || 0));
+  } else if (props.isDecimal) {
+    return formatDecimal(Number(props.modelValue || 0));
   }
+  return props.modelValue;
 });
+
+// Dynamic input type based on currency/decimal
+const inputType = computed(() => {
+  // Define o tipo como "text" apenas para campos monetários
+  if (props.isCurrency) {
+    return 'text';
+  }
+  // Para quantidades e outros valores decimais, mantém "number"
+  return props.type || 'number';
+});
+// (props.isCurrency || props.isDecimal ? 'text' : props.type || 'text'));
 
 // Align text to the right if it's a currency or decimal field
 const alignRight = computed(() => props.isCurrency || props.isDecimal);
 
-// Handle input event, stripping non-numeric characters for controlled numeric fields
+// Handle input event for different types of values
 const updateValue = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  const rawValue = target.value.replace(/[^0-9.-]+/g, ""); // Remove non-numeric characters
-  const value = Number(rawValue);
+
+  let value: string | number = target.value;
+
+  if (props.isCurrency || props.isDecimal) {
+    // Remove any non-numeric characters except "." and "-" for numbers
+    value = value.replace(/[^0-9.-]+/g, '');
+    value = Number(value); // Convert to number for currency/decimal values
+  }
+  
   emit('update:modelValue', value);
 };
+
+
 </script>
 
 <style scoped>

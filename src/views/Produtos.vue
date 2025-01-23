@@ -4,6 +4,10 @@
       <button class="back-button" @click="goBack">← VOLTAR</button>
       <h2>CADASTRAR NOVO PRODUTO</h2>
     </div>
+
+    <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
     <form @submit.prevent="submitForm" class="product-form">
       <section>
         <h3>Produto</h3>
@@ -18,7 +22,7 @@
             <FormRow>
               <FormInput 
                 label="Título do produto" 
-                v-model="formData.titulo" 
+                v-model="formData.descricao" 
                 sizeClass="col-md-8" 
                 required 
               />
@@ -26,15 +30,15 @@
             <FormRow>
               <SelectAsync
                 label="Unidade"
-                apiEndpoint="/api/unidades"
-                v-model="formData.unidade.id"
+                apiEndpoint="/unidades"
+                v-model="formData.unidade"
                 selectId="unidade-select"
                 sizeClass="col-md-4"
               />
               <SelectAsync
                 label="Marca"
-                apiEndpoint="/api/marcas"
-                v-model="formData.marca.id"
+                apiEndpoint="/marcas"
+                v-model="formData.marca"
                 selectId="marca-select"
                 sizeClass="col-md-4"
               />
@@ -62,13 +66,19 @@
           />
           <SelectAsync
             label="Arrendar"
-            v-model="formData.marca.id"
+            v-model="formData.iat"
             selectId="iat-select"
             :staticOptions="[{ id: 'S', label: 'Sim' }, { id: 'N', label: 'Não' }]"
             :useStatic="true"
             sizeClass="col-md-2"
           />
-          <FormInput label="IBPT" v-model="formData.ibpt" sizeClass="col-md-2" />
+          <SelectAsync 
+            label="IBPT" 
+            v-model="formData.ibpt" 
+            selectId="inpt-select"
+            :staticOptions="[{ id: 'P', label: 'Próprio' }, { id: 'T', label: 'Terceiros' }]"
+            :useStatic="true"
+            sizeClass="col-md-2" />
           <SelectAsync
             label="Sped"
             v-model="formData.itemSped"
@@ -174,60 +184,18 @@ import FormInput from '@/components/FormInput.vue';
 import SelectAsync from '@/components/SelectAsync.vue';
 import semProdutoImg from '@/assets/semproduto.jpeg';
 import FormRow from '@/components/FormRow.vue';
+import { createProduct } from '@/service/productService';
 
 const router = useRouter();
 const productImage = ref<string | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
+const successMessage = ref<string | null>(null);
+const errorMessage = ref<string | null>(null);
 
-interface Unidade {
-  id: string;
-  sigla: string;
-}
-
-interface Marca {
-  id: string;
-  nome: string;
-}
-
-interface Empresa {
-  id: string;
-}
-
-interface FormData {
-  id: string;
-  empresa: Empresa,
-  unidade: Unidade;
-  marca: Marca;
-  gtin: string;
-  codigo: string;
-  ncm: string;
-  nome: string;
-  descricao: string;
-  descricaoPDV: string;
-  valorCompra: number;
-  valorVenda: number;
-  precoVendaMinimo: number;
-  precoLucroZero: number;
-  precoLocroMinimo: number;
-  precoLucroMaximo: number;
-  quantidadeEstoque: number;
-  quantidadeEstoqueAnterior: number;
-  estoqueMinimo: number;
-  estoqueMaximo: number;
-  estoqueIdeal: number;
-  excluido: string;
-  inativo: string;
-  foto: string;
-  iat: string;
-  ibpt: string;
-  itemSped: string;
-}
-
-const formData = ref<FormData>({
+const formData = ref({
   id: '',
-  empresa: { id: '' },
-  unidade: { id: '', sigla: '' },
-  marca: { id: '', nome: '' },
+  unidade: '',
+  marca: '',
   gtin: '',
   codigo: '',
   ncm: '',
@@ -253,6 +221,7 @@ const formData = ref<FormData>({
   itemSped: '',
 });
 
+
 const goBack = () => {
   router.back();
 };
@@ -271,9 +240,57 @@ const handleImageUpload = (event: Event) => {
     reader.onload = (e: ProgressEvent<FileReader>) => {
       if (e.target) {
         productImage.value = e.target.result as string;
+        formData.value.foto = productImage.value;
       }
     };
     reader.readAsDataURL(file);
+  }
+};
+
+// Função para salvar o produto
+const submitForm = async () => {
+  try {
+    successMessage.value = null;
+    errorMessage.value = null;
+
+    console.log('produto montado', formData.value);
+    
+    // Envie os dados para a API
+    await createProduct(formData.value);
+
+    successMessage.value = 'Produto salvo com sucesso!';
+    // Limpar o formulário
+    formData.value = {
+      id: '',
+      unidade: '',
+      marca: '',
+      gtin: '',
+      codigo: '',
+      ncm: '',
+      nome: '',
+      descricao: '',
+      descricaoPDV: '',
+      valorCompra: 0,
+      valorVenda: 0,
+      precoVendaMinimo: 0,
+      precoLucroZero: 0,
+      precoLocroMinimo: 0,
+      precoLucroMaximo: 0,
+      quantidadeEstoque: 0,
+      quantidadeEstoqueAnterior: 0,
+      estoqueMinimo: 0,
+      estoqueMaximo: 0,
+      estoqueIdeal: 0,
+      excluido: '',
+      inativo: '',
+      foto: '',
+      iat: '',
+      ibpt: '',
+      itemSped: '',
+    };
+    productImage.value = null;
+  } catch (error: any) {
+    errorMessage.value = error.response?.data?.message || 'Erro ao salvar o produto. Tente novamente.';
   }
 };
 </script>
@@ -379,5 +396,17 @@ h3 {
   color: #5c6e74;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 </style>
