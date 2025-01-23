@@ -20,4 +20,8 @@ flex-direction: column;
 min-height: 100vh;
 }
 </style>
+<<<<<<< HEAD
   
+=======
+      
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da

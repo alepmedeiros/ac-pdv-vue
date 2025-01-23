@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
@@ -13,3 +14,12 @@ createApp(App)
     .use(VMoney)
     .use(PrimeVue)
     .mount('#app');
+=======
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+createApp(App).use(router).mount('#app')
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da

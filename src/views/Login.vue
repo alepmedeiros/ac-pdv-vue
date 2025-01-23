@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <p v-if="authMessage" class="alert">{{ authMessage }}</p>
   <div class="login-container">
     <form @submit.prevent="handleLogin">
@@ -152,3 +153,24 @@ button:disabled {
   margin-top: 10px;
 }
 </style>
+=======
+    <div>
+
+    </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+onMounted(() => {
+  router.push('/main');
+});
+</script>
+
+<style scoped>
+
+</style>
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da

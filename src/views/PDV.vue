@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="pos-container">
     <ProductDisplay :productName="currentProductName" />
 
@@ -247,4 +248,17 @@ const removeItem = (index: number) => {
   width: 100%;
   padding-top : 20px;
 }
+=======
+    <div>
+
+    </div>
+</template>
+
+<script setup lang="ts">
+
+</script>
+
+<style scoped>
+
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 </style>

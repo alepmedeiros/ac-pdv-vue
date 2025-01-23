@@ -2,7 +2,11 @@
   <div class="emitente-container">
     <div class="header">
       <button class="back-button" @click="goBack">← VOLTAR</button>
+<<<<<<< HEAD
       <h2>INSERIR EMITENTE</h2>
+=======
+      <h2>Cadastrar Emitente</h2>
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
     </div>
 
     <form @submit.prevent="submitForm" class="emitente-form">
@@ -16,13 +20,18 @@
           </div>
           <div class="form-group">
             <label for="nome">Fantasia</label>
+<<<<<<< HEAD
             <input v-model="formData.fantasia" id="nome" type="text" required placeholder="Digite aqui..." />
+=======
+            <input v-model="formData.fantasia" id="fantasia" type="text" placeholder="Digite aqui..." />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="cnpj">CNPJ</label>
+<<<<<<< HEAD
             <input v-model="formData.cnpj" id="cnpj" type="text" placeholder="Digite aqui..." />
           </div>
           <div class="form-group">
@@ -32,6 +41,19 @@
           <div class="form-group">
             <label for="inscricaoMunicipal">Inscrição Municipal</label>
             <input v-model="formData.inscricaoMunicipal" id="inscricaoMunicipal" type="text" placeholder="Digite aqui..." />
+=======
+            <input v-model="formData.cnpj" id="cnpj" type="text" required placeholder="Digite aqui..." />
+          </div>
+          <div class="form-group">
+            <label for="inscricaoEstadual">Inscrição Estadual</label>
+            <input v-model="formData.inscricaoEstadual" id="inscricaoEstadual" type="text"
+              placeholder="Digite aqui..." />
+          </div>
+          <div class="form-group">
+            <label for="inscricaoMunicipal">Inscrição Municipal</label>
+            <input v-model="formData.inscricaoMunicipal" id="inscricaoMunicipal" type="text"
+              placeholder="Digite aqui..." />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
         </div>
 
@@ -50,7 +72,12 @@
           </div>
           <div class="form-group">
             <label for="emailContabilidade">E-mail Contabilidade</label>
+<<<<<<< HEAD
             <input v-model="formData.emailContabilidade" id="emailContabilidade" type="email" placeholder="Digite aqui..." />
+=======
+            <input v-model="formData.emailContabilidade" id="emailContabilidade" type="email"
+              placeholder="Digite aqui..." />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
         </div>
 
@@ -146,11 +173,21 @@
         <div class="form-row">
           <div class="form-group">
             <label for="tipoDocumento">Tipo de Documento</label>
+<<<<<<< HEAD
             <input v-model="formData.emissorFiscal.tipoDocumento" id="tipoDocumento" type="text" placeholder="NFC-e, etc..." />
           </div>
           <div class="form-group">
             <label for="tipoDocumento">Tipo de Emissão</label>
             <input v-model="formData.emissorFiscal.tipoEmissao" id="tipoEmissao" type="text" placeholder="Normal, etc..." />
+=======
+            <input v-model="formData.emissorFiscal.tipoDocumento" id="tipoDocumento" type="text"
+              placeholder="NFC-e, etc..." />
+          </div>
+          <div class="form-group">
+            <label for="tipoDocumento">Tipo de Emissão</label>
+            <input v-model="formData.emissorFiscal.tipoEmissao" id="tipoEmissao" type="text"
+              placeholder="Normal, etc..." />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
           <div class="form-group">
             <label for="ambiente">Tipo SPED</label>
@@ -161,15 +198,26 @@
         <div class="form-row">
           <div class="form-group">
             <label for="ambiente">Ambiente</label>
+<<<<<<< HEAD
             <input v-model="formData.emissorFiscal.ambiente" id="ambiente" type="number" placeholder="2 = Homologação" />
+=======
+            <input v-model="formData.emissorFiscal.ambiente" id="ambiente" type="number"
+              placeholder="2 = Homologação" />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
           <div class="form-group">
             <label for="serie">Série</label>
             <input v-model="formData.emissorFiscal.serie" id="serie" type="text" placeholder="Digite aqui..." />
           </div>
           <div class="form-group">
+<<<<<<< HEAD
             <label for="numero">Número</label>
             <input v-model="formData.emissorFiscal.numero" id="numero" type="number" placeholder="Digite aqui..." />
+=======
+            <label for="numeroFiscal">Número</label>
+            <input v-model="formData.emissorFiscal.numero" id="numeroFiscal" type="number"
+              placeholder="Digite aqui..." />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
           </div>
           <div class="form-group">
             <label for="senha">Senha</label>
@@ -184,7 +232,12 @@
             <div class="file-upload-wrapper">
               <button type="button" class="upload-btn" @click="triggerCertificadoInput">Selecionar Certificado</button>
               <span class="file-name">{{ certFileName }}</span>
+<<<<<<< HEAD
               <input id="certificadoDigital" type="file" @change="handleCertificadoUpload" ref="certInput" accept=".pfx,.cer,.p12,.p7" class="hidden-input" />
+=======
+              <input id="certificadoDigital" type="file" @change="handleCertificadoUpload" ref="certInput"
+                accept=".pfx,.cer,.p12,.p7" class="hidden-input" />
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
             </div>
           </div>
         </div>
@@ -194,6 +247,7 @@
         <button type="submit" class="submit-button">Salvar</button>
       </div>
     </form>
+<<<<<<< HEAD
 
     <!-- Exibir notificações -->
     <transition-group name="notification" tag="div">
@@ -206,13 +260,21 @@
         @close="removeNotification(index)"
       />
     </transition-group>
+=======
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
   </div>
 </template>
 
 <script setup lang="ts">
+<<<<<<< HEAD
 import Notification from '@/components/Notification.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+=======
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from "axios";
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 
 // Função para converter ArrayBuffer em Base64
 const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
@@ -225,7 +287,10 @@ const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
   return window.btoa(binary);
 };
 
+<<<<<<< HEAD
 const notifications = ref<Array<{ type: string, title: string, message: string }>>([]); // Notificações
+=======
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 const router = useRouter();
 
 // Dados iniciais do formulário, adaptados ao JSON
@@ -264,6 +329,7 @@ const formData = ref({
   }
 });
 
+<<<<<<< HEAD
 // Função para exibir notificações
 const showNotification = (type: string, title: string, message: string) => {
   console.log(type,title,message);
@@ -276,6 +342,8 @@ const removeNotification = (index: number) => {
   notifications.value.splice(index, 1);
 };
 
+=======
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 // Estado para armazenar o nome do arquivo do certificado digital
 const certFileName = ref('Nenhum certificado selecionado');
 
@@ -337,11 +405,58 @@ const handleLogoUpload = (event: Event) => {
 };
 
 // Função para enviar o formulário e criar o JSON
+<<<<<<< HEAD
 const submitForm = () => {
   console.log('JSON Gerado:', JSON.stringify(formData.value, null, 2));
   // Simulação de sucesso
   showNotification('success', 'Sucesso', 'Emitente salvo com sucesso!');
   // Adicionar lógica de envio de dados para API aqui
+=======
+const submitForm = async () => {
+  console.log(formData);
+
+  // Adicionar lógica de envio de dados para API aqui
+  try {
+    const response = await axios.post('http://localhost:9000/api/empresas', formData.value);
+    alert('Emitente salvo com sucesso!');
+    formData.value = {
+      nome: '',
+      fantasia: '',
+      cnpj: '',
+      telefone: '',
+      celular: '',
+      email: '',
+      emailContabilidade: '',
+      inscricaoEstadual: '',
+      inscricaoMunicipal: '',
+      crt: null,
+      logotipo: '',
+      regime: null,
+      endereco: {
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: ''
+      },
+      cnae: [], // Caso necessário, incluir mais campos no formulário
+      emissorFiscal: {
+        tipoDocumento: '',
+        ambiente: null,
+        serie: '',
+        numero: null,
+        tipoEmissao: '',
+        tipoSped: '',
+        senha: '',
+        certificado: ''
+      }
+    };
+  } catch (error) {
+    alert('Erro ao salvar o emitente ' + error);
+  }
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 };
 </script>
 
@@ -358,8 +473,15 @@ const submitForm = () => {
   background-color: #a049b8;
   padding: 10px;
   color: white;
+<<<<<<< HEAD
   border-top-left-radius: 8px;  /* Arredonda o canto superior esquerdo */
   border-top-right-radius: 8px; /* Arredonda o canto superior direito */
+=======
+  border-top-left-radius: 8px;
+  /* Arredonda o canto superior esquerdo */
+  border-top-right-radius: 8px;
+  /* Arredonda o canto superior direito */
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -393,22 +515,43 @@ h3 {
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 25px;
+<<<<<<< HEAD
   color: #5c6e74; /* Cor do texto */
   border-bottom: 1px solid #ccc; /* Linha inferior */
   padding-bottom: 5px; /* Espaçamento entre o texto e a linha */
+=======
+  color: #5c6e74;
+  /* Cor do texto */
+  border-bottom: 1px solid #ccc;
+  /* Linha inferior */
+  padding-bottom: 5px;
+  /* Espaçamento entre o texto e a linha */
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 }
 
 .form-row {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+<<<<<<< HEAD
   margin-bottom: 20px; /* Espaçamento entre linhas */
   padding-right: 20px; /*verificar a possibilidade de retirar*/
+=======
+  margin-bottom: 20px;
+  /* Espaçamento entre linhas */
+  padding-right: 20px;
+  /*verificar a possibilidade de retirar*/
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 }
 
 .form-group {
   flex: 1;
+<<<<<<< HEAD
   margin-right: 20px; /*verificar a possibilidade de retirar*/ 
+=======
+  margin-right: 20px;
+  /*verificar a possibilidade de retirar*/
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
 }
 
 .form-group input,
@@ -518,9 +661,13 @@ h3 {
   cursor: pointer;
   font-weight: bold;
 }
+<<<<<<< HEAD
 
 .notification-enter-from, .notification-leave-to {
   opacity: 0;
   transform: translateY(-20px);
 }
 </style>
+=======
+</style>
+>>>>>>> 9d18a7fd13ffe27c5a839c106ae9575fef5478da
